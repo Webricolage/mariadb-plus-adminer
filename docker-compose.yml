@@ -1,0 +1,32 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    volumes:
+      - ./mariadb_data:/var/lib/mysql:Z
+    secrets:
+      - mariadb_root_password
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    container_name: adminer 
+    restart: always
+    ports:
+      - 8079:8080
+
+secrets:
+  mariadb_root_password:
+    file: .secrets/mariadb_root_password.txt
+
+networks:
+  npm:
+    external: true
+    name: npm-network
+
